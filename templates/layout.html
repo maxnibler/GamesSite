@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <base href="[[=URL('static')]]/">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="data:image/x-icon;base64,AAABAAEAAQEAAAEAIAAwAAAAFgAAACgAAAABAAAAAgAAAAEAIAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAPAAAAAA=="/>
+    <link rel="stylesheet" href="css/mycustomstyle.css">
+    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.css">
+    <script data-ad-client="ca-pub-5833230706422448" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    [[block page_head]]<!-- individual pages can customize header here -->[[end]]
+  </head>
+  <body>
+    <!-- Navigation bar -->
+    <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item has-background-grey has-text-black" href="[[=URL('index')]]">
+          Over 50s
+          <!-- <img class="logo" width="150" src="images/site_icon.png"> -->
+        </a>
+
+
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="the-navbar-menu"
+           onclick="this.classList.toggle('is-active');document.getElementById(this.dataset.target).classList.toggle('is-active');">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div id="the-navbar-menu" class="navbar-menu">
+        <div class="navbar-start">
+          [[block page_menu_items]]<!-- individual pages can add menu items here -->[[end]]
+        </div>
+
+        <div class="navbar-end">
+
+          [[if globals().get('user'):]]
+          <div class="navbar-item is-hoverable">
+            <p>[[=globals().get('user').get('email')]]</p>
+            <div class="navbar-dropdown">
+              <a class="dropdown-item">Profile</a>
+              <a class="dropdown-item" href="[[=URL('contributor')]]">Contributions</a>
+            </div>
+          </div>
+          [[pass]]
+          <div class="navbar-item">
+            <div class="buttons">
+              [[if globals().get('user'):]]
+              <a class="button is-warning" href="[[=URL('auth/logout')]]">Sign out</a>
+              [[else:]]
+              <a class="button is-link" href="[[=URL('auth/plugin/oauth2google/login', vars=dict(next='../../../index'))]]">Sign In</a>
+              [[pass]]
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </nav>
+
+    <!-- beginning of HTML inserted by extending template -->
+    [[include]]
+    <!-- end of HTML inserted by extending template -->
+    <footer class="footer has-background-dark">
+      <div class="content has-text-centered has-text-white">
+        <div>
+          Social Media:
+        </div>
+        <div class="container">
+          <a class="button is-link"
+            href="https://twitter.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span class="icon"><i class="fa fa-fw fa-twitter"></i></span>
+          </a>
+          <a class="button is-link"
+            href="https://www.instagram.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span class="icon"><i class="fa fa-fw fa-facebook"></i></span>
+          </a>
+        </div>
+        This site was made with <a href="https://py4web.com">py4web</a>.
+      </div>
+    </footer>
+  </body>
+  <script src="js/sugar.min.js"></script>
+  <script src="js/axios.min.js"></script>
+  <script src="js/vue.js"></script>
+  <script src="js/utils.js"></script>
+  [[block page_scripts]]<!-- individual pages can add scripts here -->[[end]]
+</html>

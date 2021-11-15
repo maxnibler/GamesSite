@@ -1,0 +1,82 @@
+[[extend 'layout.html']]
+
+[[block page_menu_items]]
+   <a class="navbar-item" href="[[=URL('index')]]">
+      Home
+   </a>
+   <a class="navbar-item" href="[[=URL('index')]]">
+      Dating
+   </a>
+   <a class="navbar-item" href="[[=URL('lifestyle', 'main')]]">
+      Lifestyle
+   </a>
+   <a class="navbar-item has-text-primary" href="[[=URL('about')]]">
+      About
+   </a>
+   [[if admin > 2:]]
+   <a class="navbar-item" href="[[=URL('admin_page')]]">
+      <p>Admin</p>
+   </a>
+   [[pass]]
+[[end]]
+
+<div class="section" id="vue-target" v-cloak>
+
+   <div class="container">
+      <div class="box has-background-grey mb-6">
+         <div class="columns">
+            <div class="column">
+               <figure class="image">
+               <img src="images/placeholder.jpg">
+               <!-- placeholder image from homework assignment 1 -->
+               </figure>
+            </div>
+            <div class="column">
+               <div class="columns">
+                  <div class="column">
+                     <h2 class="title is-3 has-text-white has-text-weight-bold">[[=title]]</h2>
+                  </div>
+                  <div class="column" v-if="manager">
+                     <button class="button is-warning" @click="toggle_edit">
+                        Edit
+                     </button>
+                  </div>
+               </div>
+               <p class="has-text-black" v-if="!editing">
+                  {{textblock}}
+               </p>
+               <div class="container" v-if="editing">
+                  <div class="field">
+                    <div class="control">
+                      <textarea type="text" v-model="textblock" class="textarea"></textarea>
+                    </div>
+                  </div>
+                  <div class="buttons">
+                     <button
+                        class="button is-primary"
+                        @click="update_blurb('about_text')"
+                     >
+                        Set
+                     </button>
+                     <button
+                        class="button"
+                        @click="toggle_edit"
+                     >
+                        Cancel
+                     </button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+[[block page_scripts]]
+<script>
+   let about_text = "[[=textblock]]";
+   let update_blurb_url = "[[=XML(update_blurb_url)]]";
+   let check_admin_url = "[[=XML(check_admin_url)]]";
+</script>
+<script src="js/about.js"></script>
+[[end]]

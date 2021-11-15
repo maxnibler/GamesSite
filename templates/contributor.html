@@ -1,0 +1,60 @@
+[[extend 'layout.html']]
+
+[[block page_menu_items]]
+   <a class="navbar-item" href="[[=URL('index')]]">
+      Home
+   </a>
+   <a class="navbar-item" href="[[=URL('index')]]">
+      Dating
+   </a>
+   <a class="navbar-item" href="[[=URL('lifestyle', 'main')]]">
+      Lifestyle
+   </a>
+   <a class="navbar-item" href="[[=URL('about')]]">
+      About
+   </a>
+   [[if admin > 2:]]
+   <a class="navbar-item" href="[[=URL('admin_page')]]">
+      <p>Admin</p>
+   </a>
+   [[pass]]
+[[end]]
+
+<div class="section" id="vue-target" v-cloak>
+   <div class="container">
+      <h1 class="title is-2">[[=title]]</h1>
+      <h2 class="title is-4">Contributor Account Status: {{status_message()}}</h2>
+      <div class="box has-background-grey mb-6">
+         <h2 class="title is-4">Application Form</h2>
+         <h2 class="title is-5">Title</h2>
+         <div class="field">
+           <div class="control">
+             <textarea type="input" v-model="application_title" class="input"></textarea>
+           </div>
+         </div>
+         <h2 class="title is-5">Category</h2>
+         <div class="select">
+            <select v-model="application_category" @change="category_set">
+               <option disabled value="">Please Select One</option>
+               <option v-for="c in categories">{{c.name}}</option>
+            </select>
+         </div>
+         <h2 class="title is-5" v-if="application_category != ''">Subcategory</h2>
+         <div class="select" v-if="application_category != ''">
+            <select v-model="application_subcategory">
+               <option disabled value="">Please Select One</option>
+               <option v-for="c in subcategories">{{c.name}}</option>
+            </select>
+         </div>
+      </div>
+   </div>
+</div>
+
+[[block page_scripts]]
+<script>
+   let status = "[[=status]]";
+   let get_categories_url = "[[=XML(get_categories_url)]]";
+   let get_subcategories_url = "[[=XML(get_subcategories_url)]]";
+</script>
+<script src="js/contributor.js"></script>
+[[end]]

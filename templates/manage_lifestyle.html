@@ -1,0 +1,170 @@
+[[extend 'layout.html']]
+
+[[block page_menu_items]]
+   <a class="navbar-item" href="[[=URL('index')]]">
+      Home
+   </a>
+   <a class="navbar-item" href="[[=URL('index')]]">
+      Dating
+   </a>
+   <a class="navbar-item" href="[[=URL('lifestyle', 'main')]]">
+      Lifestyle
+   </a>
+   <a class="navbar-item" href="[[=URL('about')]]">
+      About
+   </a>
+   [[if admin > 2:]]
+   <a class="navbar-item" href="[[=URL('admin_page')]]">
+      <p>Admin</p>
+   </a>
+   [[pass]]
+[[end]]
+
+<div class="section" id="vue-target" v-cloak>
+
+   <div :class="modal_state">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+         <div class="box">
+            <h2 class="title is-4">Are you sure you want to Delete:</h2>
+            <h3 class="title is-5">Category: {{category_name}}</h3>
+            <div class="buttons">
+               <button class="button is-danger" @click="delete_category">Delete</button>
+               <button class="button" @click="cancel_delete">Cancel</button>
+            </div>
+         </div>
+      </div>
+      <button class="modal-close is-large" @click="toggle_modal"></button>
+   </div>
+
+   <div class="container">
+      <h1 class="title is-3">
+         Manage Lifestyle Categories and Pages
+      </h1>
+      <div class="box has-background-grey">
+         <div class="level">
+            <div class="level-left">
+               <div class="level-item">
+                  <h2 class="title is-4">
+                     Manage Categories
+                  </h2>
+               </div>
+            </div>
+            <button class="button is-link" @click="toggle_add_cat" v-if="!adding_category">
+               New Category
+            </button>
+            <div class="level is-flex" v-else>
+               <div class="level-item">
+                  <div class="control">
+                    <input type="text" v-model="category_name" class="input is-primary"></input>
+                  </div>
+               </div>
+               <div class="buttons ml-3">
+                  <button
+                     class="button is-primary"
+                     @click="add_category"
+                  >
+                     add
+                  </button>
+                  <button
+                     class="button"
+                     @click="toggle_add_cat"
+                  >
+                     Cancel
+                  </button>
+               </div>
+            </div>
+         </div>
+         
+         <div class="box has-background-light" v-for="c in categories">
+            <div class="level">
+               <div class="level-item">
+                  <p>Name: {{c.name}}</p>
+               </div>
+               <div class="level-item">
+                  <p>Visits: {{c.visits}}</p>
+               </div>
+               <div class="level-item">
+                  <div class="buttons">
+                     <button class="button is-info" @click="manage_subs(c._idx)">
+                        Open Subcategories
+                     </button>
+                     <button class="button is-danger" @click="prep_delete(c._idx)">
+                        Delete
+                     </button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <div class="box has-background-grey" v-if="adding_subs_idx > -1">
+         <div class="level">
+            <div class="level-left">
+               <div class="level-item">
+                  <h2 class="title is-4">
+                     Manage Sub-categories of: {{categories[adding_subs_idx].name}}
+                  </h2>
+               </div>
+            </div>
+            <div class="level-right">
+               <div class="level-item">
+                  <button class="button is-link" @click="toggle_add_sub" v-if="!adding_subcategory">
+                     New Subcategory
+                  </button>
+                  <div class="level is-flex" v-else>
+                     <div class="level-item">
+                        <div class="control">
+                          <input type="text" v-model="subcategory_name" class="input is-primary"></input>
+                        </div>
+                     </div>
+                     <div class="buttons ml-3">
+                        <button
+                           class="button is-primary"
+                           @click="add_subcategory"
+                        >
+                           add
+                        </button>
+                        <button
+                           class="button"
+                           @click="toggle_add_sub"
+                        >
+                           Cancel
+                        </button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="box has-background-light" v-for="s in subcategories">
+            <div class="level">
+               <div class="level-item">
+                  <p>Name: {{s.name}}</p>
+               </div>
+               <div class="level-item">
+                  <p>Visits: {{s.visits}}</p>
+               </div>
+               <div class="level-item">
+                  <div class="buttons">
+                     <button class="button is-danger">
+                        Delete
+                     </button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+[[block page_scripts]]
+<script>
+   let check_admin_url = "[[=XML(check_admin_url)]]";
+   let add_category_url = "[[=XML(add_category_url)]]";
+   let add_subcategory_url = "[[=XML(add_subcategory_url)]]";
+   let delete_category_url = "[[=XML(delete_category_url)]]";
+   let get_categories_url = "[[=XML(get_categories_url)]]";
+   let get_subcategories_url = "[[=XML(get_subcategories_url)]]";
+</script>
+<script src="js/manage_lifestyle.js"></script>
+[[end]]

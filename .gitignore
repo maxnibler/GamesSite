@@ -1,7 +1,12 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-*$py.class
+*$py.class*.pyc
+
+# I added
+databases/*
+!databases/README.md
+private/*
 
 # C extensions
 *.so
