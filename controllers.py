@@ -76,47 +76,12 @@ def index():
         admin=check_admin()
     )
 
-@action('lifestyle/<category>')
-@action.uses(db, auth, 'lifestyle.html')
-def lifestyle(category=None):
-    assert category is not None
-    categories = db(db.lifestyle_category).select().as_list()
-    categories.append({"name":'main'})
-    name_list = names_list(categories)
-    if category not in name_list:
-        redirect(URL('lifestyle', 'main'))
-    if category == 'main':
-        id = -1
-    else:
-        id = db(db.lifestyle_category.name == category).select().first().id
+@action('DungeonMaster')
+@action.uses(db, auth, 'DungeonMaster.html')
+def index():
     return dict(
-        url_signer=url_signer,
         check_admin_url=URL('check_user_permission'),
-        get_categories_url=URL('get_lifestyle_categories'),
-        get_subcategories_url=URL('get_lifestyle_subcategories'),
-        id = id,
         admin=check_admin()
-    )
-
-@action('contributor')
-@action.uses(db, auth.user, session, 'contributor.html')
-def contributor():
-    account_id = db(db.account.email == get_user_email()).select().first().id
-    contributor_account = db(db.contributors.account == account_id).select().first()
-    print(contributor_account)
-    if contributor_account == None:
-        title = "Become A Contributor"
-        status = -1
-    else:
-        title = "Manage Your Contributor Page"
-        status = contributor_account.status
-    return dict(
-        url_signer=url_signer,
-        admin=check_admin(),
-        title=title,
-        status=status,
-        get_categories_url=URL('get_lifestyle_categories'),
-        get_subcategories_url=URL('get_lifestyle_subcategories'),
     )
 
 ### generic update endpoints
