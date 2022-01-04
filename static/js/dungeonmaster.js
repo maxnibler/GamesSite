@@ -1,35 +1,37 @@
 var config = {
     type: Phaser.AUTO,
-    width: 915,
-    height: 600,
+    width: 900,
+    height: 576,
     parent: "gameDiv",
+    backgroundColor: '#efefef',
     scene: {
         preload: preload,
         create: create,
         update: update,
-        render: render,
     }
 };
 
 var game = new Phaser.Game(config);
 
 function preload () {
-    this.load.image('background', 'images/placeholder.jpg');
+    this.load.image('tiles', ['assets/tiles/drawtiles1.png', 'assets/tiles/drawtiles1_n.png']);
+    this.load.tilemapTiledJSON('map', 'assets/tilemaps/dungeon.json');
 }
 
+var map;
+var tileset;
+var layer1;
+var currentTile;
+
 function create () {
-    this.add.image(400,300, 'background');
-    console.log("create");
+    //Create tilemap
+    map = this.make.tilemap({ key: 'map' });
+    //Add tileset to map
+    tileset = map.addTilesetImage('Cave', 'tiles');
+    //Create Blank Layer
+    layer1 = map.createLayer('Floor1', tileset, 0, 0);
 }
 
 function update () {
 
-}
-
-function render () {
-    let x = 32;
-    let y = 0;
-    let yi = 32;
-
-    
 }
