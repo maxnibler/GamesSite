@@ -22,6 +22,8 @@ var map;
 var tileset;
 var layer1;
 var currentTile;
+var marker;
+var controls;
 
 function create () {
     //Create tilemap
@@ -30,8 +32,36 @@ function create () {
     tileset = map.addTilesetImage('Cave', 'tiles');
     //Create Blank Layer
     layer1 = map.createLayer('Floor1', tileset, 0, 0);
+
+    currentTile = map.getTileAt(1,1);
+
+    marker = this.add.graphics();
+    marker.lineStyle(2, 0x000000, 1);
+    marker.strokeRect(0, 0, map.tileWidth, map.tileHeight);
+
+    this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+
+    var cursors = this.input.keyboard.createCursorKeys();
+    var controlConfig = {
+        camera: this.cameras.main,
+        left: cursors.left,
+        right: cursors.right,
+        up: cursors.up,
+        down: cursors.down,
+        speed: 0.5,
+    };
+
+    controls = new Phaser.Cameras.Controls.FixedKeyControl(controlConfig);
 }
 
-function update () {
+function update (tile, delta) {
+    controls.update(delta);
 
+    var worldPoint = this.input.activePointer.positionToCamera(this.cameras.main);
+
+    var pointerTileX = map.worldToTileX(worldPoint.x);
+    var pointerTileY = map.worldToTileY(worldPoint.y);
+
+    marker.x = map.tileToWorldX(pointerTileX);
+    marker.y = map.tileToWorldY(pointerTileY);
 }
