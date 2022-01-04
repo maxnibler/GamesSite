@@ -1,7 +1,7 @@
 var config = {
     type: Phaser.AUTO,
     width: 900,
-    height: 576,
+    height: 600,
     parent: "gameDiv",
     backgroundColor: '#efefef',
     scene: {
@@ -14,8 +14,9 @@ var config = {
 var game = new Phaser.Game(config);
 
 function preload () {
-    this.load.image('tiles', ['assets/tiles/drawtiles1.png', 'assets/tiles/drawtiles1_n.png']);
+    this.load.image('tiles', 'assets/tiles/drawtiles1.png');
     this.load.tilemapTiledJSON('map', 'assets/tilemaps/dungeon.json');
+    this.load.image('sidemenu bkgd', 'assets/UI/sidemenu background.png');
 }
 
 var map;
@@ -24,6 +25,7 @@ var layer1;
 var currentTile;
 var marker;
 var controls;
+var menuContainer;
 
 function create () {
     //Create tilemap
@@ -52,6 +54,10 @@ function create () {
     };
 
     controls = new Phaser.Cameras.Controls.FixedKeyControl(controlConfig);
+
+    var tiles = this.add.image(40,70,'tiles').setOrigin(0);
+    var sidemenuContainer = this.add.image(0,0,'sidemenu bkgd').setOrigin(0);
+    menuContainer = this.add.container(700, 0, [sidemenuContainer, tiles]);
 }
 
 function update (tile, delta) {
@@ -64,4 +70,8 @@ function update (tile, delta) {
 
     marker.x = map.tileToWorldX(pointerTileX);
     marker.y = map.tileToWorldY(pointerTileY);
+
+    if (this.input.manager.activePointer.isDown) {
+        map.putTileAt(currentTile, pointerTileX, pointerTileY);
+    }
 }
