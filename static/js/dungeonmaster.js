@@ -1,5 +1,5 @@
-import MainScene from "./MainScene.js";
-import GameUI from "./gameUI.js";
+import MainScene from "./Scenes/MainScene.js";
+import GameUI from "./Scenes/gameUI.js";
 
 const config = {
     type: Phaser.AUTO,

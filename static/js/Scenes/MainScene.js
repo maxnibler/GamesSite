@@ -1,3 +1,5 @@
+import { sceneEvents } from "../Events/EventCenter.js";
+
 export default class MainScene extends Phaser.Scene {
     constructor () {
         super('Main');
@@ -6,7 +8,7 @@ export default class MainScene extends Phaser.Scene {
     preload () {
         this.load.image('tiles', 'assets/tiles/drawtiles1.png');
         this.load.tilemapTiledJSON('map', 'assets/tilemaps/dungeon.json');
-        this.load.image('sidemenu bkgd', 'assets/UI/sidemenu background.png');
+        this.load.image('sidemenu-bkgd', 'assets/UI/sidemenu background.png');
         this.load.image('gold-icon', 'assets/UI/gold coin.jpg');
     }
 
@@ -38,6 +40,8 @@ export default class MainScene extends Phaser.Scene {
         };
         
         this.controls = new Phaser.Cameras.Controls.FixedKeyControl(controlConfig);
+
+        sceneEvents.on('change-tile', this.handleChangeTile, this);
     }
 
     update (tile, delta) {
@@ -54,6 +58,9 @@ export default class MainScene extends Phaser.Scene {
         if (this.input.manager.activePointer.isDown) {
             this.map.putTileAt(this.currentTile, pointerTileX, pointerTileY);
         }
-        
+    }
+
+    handleChangeTile(tileID) {
+        this.currentTile = tileID;
     }
 }
