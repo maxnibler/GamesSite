@@ -1,4 +1,5 @@
 import { sceneEvents } from "../Events/EventCenter.js";
+import Button from "../Sprites/button.js";
 
 export default class GameUI extends Phaser.Scene {
     #tileID = 1;
@@ -14,6 +15,32 @@ export default class GameUI extends Phaser.Scene {
         menu.create(800, 300, 'sidemenu-bkgd');
         this.spaceKey = this.input.keyboard.addKey(32);
         this.triggerLock = false;
+
+        //Make buttons
+
+        this.tileFloor = new Button({
+            scene: this,
+            key: 'tile-button',
+            up: 1,
+            down: 1,
+            over: 1,
+            x: 760,
+            y: 300
+        });
+
+        this.tileFloor.on('pointerdown', () => this.tileButtonPressed(this.tileFloor.config.up), this);
+
+        this.tileWall = new Button({
+            scene: this,
+            key: 'tile-button',
+            up: 2,
+            down: 2,
+            over: 2,
+            x: 840,
+            y: 300
+        });
+
+        this.tileWall.on('pointerdown', () => this.tileButtonPressed(this.tileWall.config.up), this);
     }
 
     update () {
@@ -21,7 +48,6 @@ export default class GameUI extends Phaser.Scene {
             if (!this.triggerLock) {
                 this.triggerLock = true;
                 this.changeTileID();
-                console.log(this.#tileID);
                 sceneEvents.emit('change-tile', this.#tileID);
             }
         }
@@ -37,5 +63,9 @@ export default class GameUI extends Phaser.Scene {
         } else {
             this.#tileID = 1;
         }
+    }
+
+    tileButtonPressed (ID) {
+        sceneEvents.emit('change-tile', ID);
     }
 }

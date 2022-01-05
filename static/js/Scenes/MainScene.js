@@ -10,6 +10,13 @@ export default class MainScene extends Phaser.Scene {
         this.load.tilemapTiledJSON('map', 'assets/tilemaps/dungeon.json');
         this.load.image('sidemenu-bkgd', 'assets/UI/sidemenu background.png');
         this.load.image('gold-icon', 'assets/UI/gold coin.jpg');
+        this.load.spritesheet('tile-button', 'assets/tiles/drawtiles1.png', 
+            { 
+                frameWidth: 32, 
+                frameHeight: 32,
+                margin: 1,
+                spacing: 2,
+            });
     }
 
     create () {
