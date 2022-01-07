@@ -29,9 +29,9 @@ export default class MainScene extends Phaser.Scene {
         //Add tileset to this.map
         const tileset = this.map.addTilesetImage('Cave', 'tiles');
         //Load the layer from tileset
-        const floor1 = this.map.createLayer('Floor1', tileset, 0, 0);
+        this.floor1 = this.map.createLayer('Floor1', tileset, 0, 0);
         //Set collision for the layer
-        floor1.setCollisionByProperty({collides: true});
+        this.floor1.setCollisionByProperty({collides: true});
 
         this.currentTile = this.map.getTileAt(1,1);
     
@@ -63,20 +63,25 @@ export default class MainScene extends Phaser.Scene {
         //create a group for adventurers
         const adventurers = this.physics.add.group({
             classType: Elf,
+            createCallback: (go) => {
+                const elfGo = go;
+                elfGo.body.onCollide = true;
+            }
         });
 
         const adventurersList = [adventurers.get(88, 44, 'elf_m', 'elf_m_idle_anim_f0.png')];
-        adventurersList[0].setAnimation('elf_m-idle');
+
+        this.floor1Collider = this.physics.add.collider(adventurers, this.floor1);
 
         //Create debuger for collision on walls
-        /*
+        
         const debugGraphics = this.add.graphics().setAlpha(0.7);
-        floor1.renderDebug(debugGraphics, {
+        this.floor1.renderDebug(debugGraphics, {
             tileColor: null,
             collidingTileColor: new Phaser.Display.Color(243, 234, 48, 255),
             faceColor: new Phaser.Display.Color(40, 39, 37, 255),
         });
-        */
+        
     }
 
     update (tile, delta) {
@@ -92,6 +97,8 @@ export default class MainScene extends Phaser.Scene {
 
         if (this.input.manager.activePointer.isDown) {
             this.map.putTileAt(this.currentTile, pointerTileX, pointerTileY);
+
+            this.floor1.setCollisionByProperty({collides: true});
         }
     }
 
