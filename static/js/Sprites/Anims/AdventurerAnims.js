@@ -8,7 +8,7 @@ const createElfMaleAnims = (anims) => {
     });
     //Create Run Right Animation
     anims.create({
-        key: 'elf_m-run-r',
+        key: 'elf_m-run',
         frames: anims.generateFrameNames('elf_m', {start: 0, end: 3, prefix: 'elf_m_run_anim_f', suffix: '.png'}),
         repeat: -1,
         frameRate: 5,

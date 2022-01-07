@@ -1,5 +1,6 @@
 import { sceneEvents } from "../Events/EventCenter.js";
 import { createElfMaleAnims } from "../Sprites/Anims/AdventurerAnims.js";
+import Elf from "../Sprites/Dynamic/Elf.js";
 
 export default class MainScene extends Phaser.Scene {
     constructor () {
@@ -57,11 +58,15 @@ export default class MainScene extends Phaser.Scene {
         //Listen for change tile event
         sceneEvents.on('change-tile', this.handleChangeTile, this);
 
-        //create adventurer Sprite
-        const adventurer01 = this.add.sprite(48, 44, 'elf_m', 'elf_m_idle_anim_f0.png');
         createElfMaleAnims(this.anims);
-        //Play animation for idle
-        adventurer01.anims.play('elf_m-idle');
+
+        //create a group for adventurers
+        const adventurers = this.physics.add.group({
+            classType: Elf,
+        });
+
+        const adventurersList = [adventurers.get(88, 44, 'elf_m', 'elf_m_idle_anim_f0.png')];
+        adventurersList[0].setAnimation('elf_m-idle');
 
         //Create debuger for collision on walls
         /*
