@@ -17,6 +17,7 @@ export default class MainScene extends Phaser.Scene {
                 margin: 1,
                 spacing: 2,
             });
+        this.load.atlas('elf_m', 'assets/sprites/characters/adventurers/elf_m.png', 'assets/sprites/characters/adventurers/elf_m.json')
     }
 
     create () {
@@ -26,7 +27,9 @@ export default class MainScene extends Phaser.Scene {
         //Add tileset to this.map
         const tileset = this.map.addTilesetImage('Cave', 'tiles');
         //Load the layer from tileset
-        const layer1 = this.map.createLayer('Floor1', tileset, 0, 0);
+        const floor1 = this.map.createLayer('Floor1', tileset, 0, 0);
+        //Set collision for the layer
+        floor1.setCollisionByProperty({collides: true});
 
         this.currentTile = this.map.getTileAt(1,1);
     
@@ -34,8 +37,10 @@ export default class MainScene extends Phaser.Scene {
         this.marker.lineStyle(2, 0x000000, 1);
         this.marker.strokeRect(0, 0, this.map.tileWidth, this.map.tileHeight);
 
+        //Create Camera
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-    
+        
+        //Create controls for camera
         const cursors = this.input.keyboard.createCursorKeys();
         const controlConfig = {
             camera: this.cameras.main,
@@ -48,7 +53,29 @@ export default class MainScene extends Phaser.Scene {
         
         this.controls = new Phaser.Cameras.Controls.FixedKeyControl(controlConfig);
 
+        //Listen for change tile event
         sceneEvents.on('change-tile', this.handleChangeTile, this);
+
+        //create adventurer Sprite
+        const adventurer01 = this.add.sprite(48, 44, 'elf_m', 'elf_m_idle_anim_f0.png');
+        this.anims.create({
+            key: 'elf_m-idle',
+            frames: this.anims.generateFrameNames('elf_m', {start: 0, end: 3, prefix: 'elf_m_idle_anim_f', suffix: '.png'}),
+            repeat: -1,
+            frameRate: 8,
+        })
+        //Play animation for idle
+        adventurer01.anims.play('elf_m-idle');
+
+        //Create debuger for collision on walls
+        /*
+        const debugGraphics = this.add.graphics().setAlpha(0.7);
+        floor1.renderDebug(debugGraphics, {
+            tileColor: null,
+            collidingTileColor: new Phaser.Display.Color(243, 234, 48, 255),
+            faceColor: new Phaser.Display.Color(40, 39, 37, 255),
+        });
+        */
     }
 
     update (tile, delta) {

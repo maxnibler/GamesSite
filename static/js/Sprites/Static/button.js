@@ -46,7 +46,6 @@ export default class Button extends Phaser.GameObjects.Sprite {
         this.on('pointerout', this.onUp, this);
         //store config
         this.config = config;
-        this.emit('pointerclick', config.down);
     }
 
     onDown () {

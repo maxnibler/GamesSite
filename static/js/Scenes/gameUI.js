@@ -1,5 +1,5 @@
 import { sceneEvents } from "../Events/EventCenter.js";
-import Button from "../Sprites/button.js";
+import Button from "../Sprites/Static/button.js";
 
 export default class GameUI extends Phaser.Scene {
     #tileID = 1;
