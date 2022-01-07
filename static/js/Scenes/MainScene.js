@@ -1,4 +1,5 @@
 import { sceneEvents } from "../Events/EventCenter.js";
+import { createElfMaleAnims } from "../Sprites/Anims/AdventurerAnims.js";
 
 export default class MainScene extends Phaser.Scene {
     constructor () {
@@ -58,12 +59,7 @@ export default class MainScene extends Phaser.Scene {
 
         //create adventurer Sprite
         const adventurer01 = this.add.sprite(48, 44, 'elf_m', 'elf_m_idle_anim_f0.png');
-        this.anims.create({
-            key: 'elf_m-idle',
-            frames: this.anims.generateFrameNames('elf_m', {start: 0, end: 3, prefix: 'elf_m_idle_anim_f', suffix: '.png'}),
-            repeat: -1,
-            frameRate: 8,
-        })
+        createElfMaleAnims(this.anims);
         //Play animation for idle
         adventurer01.anims.play('elf_m-idle');
 
