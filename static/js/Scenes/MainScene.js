@@ -74,14 +74,14 @@ export default class MainScene extends Phaser.Scene {
         this.floor1Collider = this.physics.add.collider(adventurers, this.floor1);
 
         //Create debuger for collision on walls
-        
+        /*
         const debugGraphics = this.add.graphics().setAlpha(0.7);
         this.floor1.renderDebug(debugGraphics, {
             tileColor: null,
             collidingTileColor: new Phaser.Display.Color(243, 234, 48, 255),
             faceColor: new Phaser.Display.Color(40, 39, 37, 255),
         });
-        
+        */
     }
 
     update (tile, delta) {
@@ -96,13 +96,14 @@ export default class MainScene extends Phaser.Scene {
         this.marker.y = this.map.tileToWorldY(pointerTileY);
 
         if (this.input.manager.activePointer.isDown) {
-            this.map.putTileAt(this.currentTile, pointerTileX, pointerTileY);
-
+            this.floor1.putTileAt(this.currentTile, pointerTileX, pointerTileY);
             this.floor1.setCollisionByProperty({collides: true});
         }
     }
 
     handleChangeTile(tileID) {
-        this.currentTile = tileID;
+        let tile = this.floor1.findByIndex(tileID);
+        //console.log(tile);
+        this.currentTile = tile;
     }
 }

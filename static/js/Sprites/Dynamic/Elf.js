@@ -1,12 +1,14 @@
 const UP = 0;
-const DOWN = 1;
-const RIGHT = 2;
+const RIGHT = 1;
+const DOWN = 2;
 const LEFT = 3;
 
 const randomDirection = (exclude) => {
     let newDirection = Phaser.Math.Between(0, 3);
-    while (newDirection === exclude) {
+    let count = 0;
+    while (newDirection === exclude && newDirection%2 === exclude%2) {
         newDirection = Phaser.Math.Between(0,3);
+        if (count++ >= 10) break;
     }
     return newDirection;
 }
