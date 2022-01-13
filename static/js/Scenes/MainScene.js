@@ -69,7 +69,8 @@ export default class MainScene extends Phaser.Scene {
             }
         });
 
-        const adventurersList = [adventurers.get(88, 44, 'elf_m', 'elf_m_idle_anim_f0.png')];
+        this.adventurersList = [adventurers.get(88, 44, 'elf_m', 'elf_m_idle_anim_f0.png')];
+        //adventurersList.push(adventurers.get(140, 44, 'elf_m', 'elf_m_idle_anim_f0.png'));
 
         this.floor1Collider = this.physics.add.collider(adventurers, this.floor1);
 
@@ -94,6 +95,12 @@ export default class MainScene extends Phaser.Scene {
     
         this.marker.x = this.map.tileToWorldX(pointerTileX);
         this.marker.y = this.map.tileToWorldY(pointerTileY);
+
+        for (let i = 0; i < this.adventurersList.length; i++) {
+            if (this.adventurersList[i].getCoords().y > 200 && !this.adventurersList[i].isIdle()) {
+                this.adventurersList[i].stopMoving();
+            }
+        }
 
         if (this.input.manager.activePointer.isDown) {
             this.floor1.putTileAt(this.currentTile, pointerTileX, pointerTileY);

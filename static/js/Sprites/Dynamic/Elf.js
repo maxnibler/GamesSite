@@ -15,12 +15,14 @@ const randomDirection = (exclude) => {
 
 export default class Elf extends Phaser.Physics.Arcade.Sprite {
     #direction;
+    #idle;
 
     constructor (scene, x, y, key, frame) {
         super(scene, x, y, key, frame);
 
-        this.anims.play('elf_m-idle');
+        this.anims.play('elf_m-run');
         this.direction = RIGHT;
+        this.idle = false;
 
         scene.physics.world.on(Phaser.Physics.Arcade.Events.TILE_COLLIDE, this.handleCollision, this);
     }
@@ -28,7 +30,13 @@ export default class Elf extends Phaser.Physics.Arcade.Sprite {
     preUpdate (t, dt) {
         super.preUpdate(t, dt);
 
+        //console.log("elf coord:", this.x, this.y);
+
         const speed = 20;
+        if (this.idle) {
+            this.setVelocity(0, 0);
+            return;
+        }
 
         switch (this.direction) {
             case UP:
@@ -52,5 +60,18 @@ export default class Elf extends Phaser.Physics.Arcade.Sprite {
         }
 
         this.direction = randomDirection(this.direction);
+    }
+
+    stopMoving() {
+        this.idle = true;
+        this.anims.play('elf_m-idle');
+    }
+
+    isIdle() {
+        return this.idle;
+    }
+
+    getCoords() {
+        return {x: this.x, y: this.y};
     }
 }
