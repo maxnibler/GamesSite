@@ -20,8 +20,6 @@ export default class Elf extends Phaser.Physics.Arcade.Sprite {
         this.anims.play('elf_m-run');
         this.direction = dir.RIGHT;
         this.idle = false;
-
-        scene.physics.world.on(Phaser.Physics.Arcade.Events.TILE_COLLIDE, this.handleCollision, this);
     }
 
     preUpdate (t, dt) {
