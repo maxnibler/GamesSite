@@ -1,7 +1,4 @@
-const UP = 0;
-const RIGHT = 1;
-const DOWN = 2;
-const LEFT = 3;
+import {Directions as dir} from '../../Utils/Constants.js'
 
 const randomDirection = (exclude) => {
     let newDirection = Phaser.Math.Between(0, 3);
@@ -21,7 +18,7 @@ export default class Elf extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, key, frame);
 
         this.anims.play('elf_m-run');
-        this.direction = RIGHT;
+        this.direction = dir.RIGHT;
         this.idle = false;
 
         scene.physics.world.on(Phaser.Physics.Arcade.Events.TILE_COLLIDE, this.handleCollision, this);
@@ -39,16 +36,16 @@ export default class Elf extends Phaser.Physics.Arcade.Sprite {
         }
 
         switch (this.direction) {
-            case UP:
+            case dir.UP:
                 this.setVelocity(0, -speed);
                 break;
-            case DOWN:
+            case dir.DOWN:
                 this.setVelocity(0, speed);
                 break;
-            case LEFT:
+            case dir.LEFT:
                 this.setVelocity(-speed, 0);
                 break;
-            case RIGHT:
+            case dir.RIGHT:
                 this.setVelocity(speed, 0);
                 break;
         }
@@ -60,6 +57,11 @@ export default class Elf extends Phaser.Physics.Arcade.Sprite {
         }
 
         this.direction = randomDirection(this.direction);
+    }
+
+    setDirection(newDirection) {
+        if (newDirection < 0 || newDirection > 3) return 'invalid Direction';
+        this.direction = newDirection;
     }
 
     stopMoving() {
