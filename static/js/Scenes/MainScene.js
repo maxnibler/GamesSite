@@ -72,7 +72,7 @@ export default class MainScene extends Phaser.Scene {
 
         this.adventurersList = [adventurers.get(88, 44, 'elf_m', 'elf_m_idle_anim_f0.png')];
 
-        this.adventurerAI = new AdventurerBehavior(this, this.adventurersList);
+        this.adventurerAI = new AdventurerBehavior(this, this.adventurersList, this.floor1);
         this.adventurerAI.create();
 
         //adventurersList.push(adventurers.get(140, 44, 'elf_m', 'elf_m_idle_anim_f0.png'));
