@@ -5,4 +5,9 @@ const Directions = {
     LEFT : 3,
 }
 
-export {Directions};
+const BUFFER_DISTANCE = 2;
+
+export {
+    Directions,
+    BUFFER_DISTANCE,
+};
