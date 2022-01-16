@@ -36,7 +36,7 @@ export default class AdventurerBehavior {
 
     create() {
         for (let i=0; i < this.adventurers.length; i++) {
-            this.adventurers[i].goal = {x: 200, y: 150};
+            this.adventurers[i].goal = {x: 2, y: 1};
         }
 
         //this.scene.physics.world.on(Phaser.Physics.Arcade.Events.TILE_COLLIDE, this.adventurers[0].sprite.handleCollision, this.adventurers[0].sprite);
@@ -44,34 +44,34 @@ export default class AdventurerBehavior {
 
     update() {
         let coords = this.adventurers[0].sprite.getCoords();
-        //let idle = this.adventurers[0].sprite.isIdle();
-        //let currentTile = this.getTileIndices(coords);
         this.setGoal(this.adventurers[0]);
         this.goTowardsGoal(this.adventurers[0]);
-        /*
-        if (!tileCompare(currentTile, this.adventurers[0].tile)) {
-            console.log(this.getAdjTiles(coords));
-            this.adventurers[0].tile = this.getTileIndices(coords);
-        }
-        */
+        //console.log(this.adventurers[0].goal);
     }
 
     setGoal(adventurer) {
         let currentTile = this.getTileIndices(adventurer.sprite.getCoords());
-        if (tileCompare(currentTile, adventurer.tile)) {
+        if (!tileCompare(currentTile, adventurer.goal)) {
             return;
         }
         adventurer.visited.push(currentTile);
         let tileList = this.getAdjTiles(currentTile);
         //console.log('adj', tileList);
+        adventurer.goal = this.selectTile(tileList);
         adventurer.tile = currentTile;
+    }
+
+    selectTile(tileList) {
+        let tileGoal = tileList[Phaser.Math.Between(0, tileList.length-1)];
+        return tileGoal;
     }
 
     goTowardsGoal(adventurer) {
         let adventurerSprite = adventurer.sprite;
-        let dest = adventurer.goal;
-        let x = dest.x - adventurerSprite.getCoords().x;
-        let y = dest.y - adventurerSprite.getCoords().y;
+        let destX = this.layer.tileToWorldXY(adventurer.goal.x, adventurer.goal.y).x;
+        let destY = this.layer.tileToWorldXY(adventurer.goal.x, adventurer.goal.y).y;
+        let x = destX - adventurerSprite.getCoords().x + 16;
+        let y = destY - adventurerSprite.getCoords().y + 16;
         let direction = 0;
 
         if (Math.abs(x) > Math.abs(y)) {
@@ -80,10 +80,10 @@ export default class AdventurerBehavior {
         } else if (Math.abs(y) > BUFFER_DISTANCE) {
             if (y > 0) direction = dir.DOWN;
             if (y < 0) direction = dir.UP;
-        } else if (!adventurerSprite.isIdle()) {
+        }/* else if (!adventurerSprite.isIdle()) {
             adventurerSprite.stopMoving();
             return;
-        }
+        }*/
         adventurerSprite.setDirection(direction);
         return;
     }
@@ -125,8 +125,8 @@ export default class AdventurerBehavior {
     }
 
     getTileIndices(coords) {
-        const tileX = this.layer.worldToTileX(coords.x);
-        const tileY = this.layer.worldToTileY(coords.y);
+        const tileX = this.layer.worldToTileX(coords.x - 12);
+        const tileY = this.layer.worldToTileY(coords.y - 14);
         return {x: tileX, y: tileY};
     }
 

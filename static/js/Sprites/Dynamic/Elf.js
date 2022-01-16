@@ -13,6 +13,7 @@ const randomDirection = (exclude) => {
 export default class Elf extends Phaser.Physics.Arcade.Sprite {
     #direction;
     #idle;
+    #height_offset;
 
     constructor (scene, x, y, key, frame) {
         super(scene, x, y, key, frame);
@@ -20,6 +21,7 @@ export default class Elf extends Phaser.Physics.Arcade.Sprite {
         this.anims.play('elf_m-run');
         this.direction = dir.RIGHT;
         this.idle = false;
+        this.#height_offset = 14;
     }
 
     preUpdate (t, dt) {
@@ -47,6 +49,10 @@ export default class Elf extends Phaser.Physics.Arcade.Sprite {
                 this.setVelocity(speed, 0);
                 break;
         }
+    }
+
+    heightOffset() {
+        return this.#height_offset;
     }
 
     handleCollision(go, tile, body) {
